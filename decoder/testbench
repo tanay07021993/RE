@@ -1,0 +1,44 @@
+module decoderTB;
+
+	// Inputs
+	reg [14:0] received;
+	reg clk;
+	reg start;
+	reg ctrl;
+
+	// Outputs
+	wire [7:0] corrected;//CHANGES
+	wire [14:0] decodedOp;
+	wire [1:0] nerr;
+	
+   
+	// Instantiate the Unit Under Test (UUT)
+	sampledec uut (
+		.received(received), 
+		.clk(clk), 
+		.start(start),
+		.ctrl(ctrl), 
+		.corrected(corrected), 
+		.decodedOp(decodedOp), 
+		.nerr(nerr)
+	);
+	
+	initial begin
+		// Initialize Inputs
+		clk=0;
+		received=0;
+		forever #5 clk = ~clk;
+	end
+	
+	initial
+	begin
+	//works fine
+	//#5 start=1;r=15'b101101001100101;
+	#5 start=1;received=15'b 111011101000111 ;	//"A"
+	#5 start=0;ctrl=0;
+	
+	$monitor("\nNo. of errors=%d\n Error found in position %d\n Received Data =%s\n Corrected Data=%b Msg sent=%s",uut.nerr,uut.m,uut.received[6:0],decodedOp,corrected);	
+	end
+      
+endmodule
+
