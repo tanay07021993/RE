@@ -1,0 +1,40 @@
+module testbench;
+
+	// Inputs
+	reg [6:0] msg;
+	reg clk;
+	reg reset;
+	reg active_encoder;
+
+	// Outputs
+	wire [0:14] out;
+
+	// Instantiate the Unit Under Test (UUT)
+	BCHEncoder uut (
+		.out(out), 
+		.msg(msg), 
+		.clk(clk), 
+		.reset(reset), 
+		.active_encoder(active_encoder)
+	);
+
+	initial begin
+		// Initialize Inputs
+		
+		clk = 0;
+		forever #5 clk=~clk;
+	end
+	
+	initial
+	begin	
+	# 10 reset = 1'b0;
+	#10 active_encoder= 1'b1; msg=  "A"; //ASCII is 65 1000001
+	#500 $finish ;
+	end
+	
+	initial 
+	begin
+		$monitor( $time, "OUT= %b MSG=%s", out, msg);
+	end 
+endmodule
+
