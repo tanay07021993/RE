@@ -5,12 +5,13 @@ module decoderTB;
 	reg clk;
 	reg start;
 	reg ctrl;
+	
 
 	// Outputs
 	wire [7:0] corrected;//CHANGES
 	wire [14:0] decodedOp;
 	wire [1:0] nerr;
-	
+	wire [6:0]c1;
    
 	// Instantiate the Unit Under Test (UUT)
 	sampledec uut (
@@ -20,7 +21,8 @@ module decoderTB;
 		.ctrl(ctrl), 
 		.corrected(corrected), 
 		.decodedOp(decodedOp), 
-		.nerr(nerr)
+		.nerr(nerr),
+		.c1(c1)
 	);
 	
 	initial begin
@@ -34,7 +36,7 @@ module decoderTB;
 	begin
 	//works fine
 	//#5 start=1;r=15'b101101001100101;
-	#5 start=1;received=15'b 111011101000111 ;	//"A"
+	#5 start=1;received=15'b 111011101000111 ;	//"q"
 	#5 start=0;ctrl=0;
 	
 	$monitor("\nNo. of errors=%d\n Error found in position %d\n Received Data =%s\n Corrected Data=%b Msg sent=%s",uut.nerr,uut.m,uut.received[6:0],decodedOp,corrected);	
